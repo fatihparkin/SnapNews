@@ -1,4 +1,4 @@
-package com.fatihparkin.snapnews
+package com.fatihparkin.snapnews.ui.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater

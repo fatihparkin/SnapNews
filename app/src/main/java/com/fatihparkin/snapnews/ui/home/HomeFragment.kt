@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fatihparkin.snapnews.data.remote.RetrofitClient
 import com.fatihparkin.snapnews.data.repository.NewsRepository
 import com.fatihparkin.snapnews.databinding.FragmentHomeBinding
+import com.fatihparkin.snapnews.ui.adapter.HeadlineAdapter
 import com.fatihparkin.snapnews.ui.adapter.NewsAdapter
 
 class HomeFragment : Fragment() {
@@ -22,7 +23,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
 
-    private val searchHandler = Handler(Looper.getMainLooper()) // 🔥 Debounce için Handler
+    private val searchHandler = Handler(Looper.getMainLooper()) // Debounce için Handler
     private var searchRunnable: Runnable? = null
 
     override fun onCreateView(
@@ -36,37 +37,48 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // ViewModel ve Repository
         val repository = NewsRepository(RetrofitClient.api)
         val factory = HomeViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
 
+        // RecyclerView ve Adapter'ı bağlama
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        // ViewPager2 için Adapter başlatma
+        val headlineAdapter = HeadlineAdapter(emptyList())
+        binding.viewPager.adapter = headlineAdapter
+
+        // DotsIndicator'u ViewPager2 ile bağlama
+        binding.dotsIndicator.setViewPager2(binding.viewPager)
+
+        // Haberleri getirme işlemi
         viewModel.newsLiveData.observe(viewLifecycleOwner) { newsResponse ->
             if (newsResponse.articles.isNotEmpty()) {
                 binding.recyclerView.adapter = NewsAdapter(newsResponse.articles)
+                headlineAdapter.updateHeadlines(newsResponse.articles.take(5)) // İlk 5 manşet
             }
         }
 
-        viewModel.fetchNews() //  Uygulama açılınca haberleri getir
+        // İlk başta haberleri çek
+        viewModel.fetchNews()
 
-        setupSearchView() // Gerçek zamanlı arama başlat
+        // Arama işlemi için SearchView ayarı
+        setupSearchView()
     }
 
     private fun setupSearchView() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return false // Enter’a basınca manuel arama yapmayı engelliyoruz
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchRunnable?.let { searchHandler.removeCallbacks(it) } // Önceki aramayı iptal et
-
+                searchRunnable?.let { searchHandler.removeCallbacks(it) }
                 searchRunnable = Runnable {
-                    viewModel.fetchNews(newText) //  Kullanıcı yazmayı bitirince API çağrısı yap
+                    viewModel.fetchNews(newText)
                 }
-
-                searchHandler.postDelayed(searchRunnable!!, 500) //  500ms bekleyip çalıştır
+                searchHandler.postDelayed(searchRunnable!!, 500)
                 return true
             }
         })

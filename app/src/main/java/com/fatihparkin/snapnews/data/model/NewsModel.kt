@@ -4,6 +4,7 @@ import com.fatihparkin.snapnews.data.remote.NewsApi
 import com.google.gson.annotations.SerializedName
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.Serializable
 
 // API yanıt modeli
 data class NewsResponse(
@@ -18,7 +19,7 @@ data class Article(
     @SerializedName("url") val url: String,
     @SerializedName("urlToImage") val imageUrl: String?,
     @SerializedName("publishedAt") val publishedAt: String
-)
+) :Serializable
 
 // Haber kaynağı modeli
 data class Source(

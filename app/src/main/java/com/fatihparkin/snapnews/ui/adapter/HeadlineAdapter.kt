@@ -10,8 +10,10 @@ import com.fatihparkin.snapnews.databinding.ItemHeadlineBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class HeadlineAdapter(private var headlines: List<Article>) :
-    RecyclerView.Adapter<HeadlineAdapter.HeadlineViewHolder>() {
+class HeadlineAdapter(
+    private var headlines: List<Article>,
+    private val onItemClick: (Article) -> Unit // EKLENDİ
+) : RecyclerView.Adapter<HeadlineAdapter.HeadlineViewHolder>() {
 
     class HeadlineViewHolder(val binding: ItemHeadlineBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -28,7 +30,6 @@ class HeadlineAdapter(private var headlines: List<Article>) :
         val article = headlines[position]
         holder.binding.headlineTitle.text = article.title
 
-        // Açıklama kontrolü
         if (article.description.isNullOrEmpty()) {
             holder.binding.headlineDescription.visibility = View.GONE
         } else {
@@ -36,13 +37,16 @@ class HeadlineAdapter(private var headlines: List<Article>) :
             holder.binding.headlineDescription.visibility = View.VISIBLE
         }
 
-        // Tarih formatlama
         holder.binding.headlineDate.text = formatDate(article.publishedAt)
 
-        // Görsel yükleme
         Glide.with(holder.itemView.context)
             .load(article.imageUrl)
             .into(holder.binding.headlineImage)
+
+        // BURASI TIKLANABİLİR YAPILDI
+        holder.itemView.setOnClickListener {
+            onItemClick(article)
+        }
     }
 
     override fun getItemCount(): Int = headlines.size

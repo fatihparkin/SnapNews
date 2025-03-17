@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fatihparkin.snapnews.data.remote.RetrofitClient
 import com.fatihparkin.snapnews.data.repository.NewsRepository
@@ -23,7 +24,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
 
-    private val searchHandler = Handler(Looper.getMainLooper()) // Debounce için Handler
+    private val searchHandler = Handler(Looper.getMainLooper())
     private var searchRunnable: Runnable? = null
 
     override fun onCreateView(
@@ -37,41 +38,43 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ViewModel ve Repository
         val repository = NewsRepository(RetrofitClient.api)
         val factory = HomeViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
 
-        // RecyclerView ve Adapter'ı bağlama
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // ViewPager2 için Adapter başlatma
-        val headlineAdapter = HeadlineAdapter(emptyList())
+        // Manşet adapter
+        val headlineAdapter = HeadlineAdapter(emptyList()) { selectedArticle ->
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(selectedArticle)
+            findNavController().navigate(action)
+        }
         binding.viewPager.adapter = headlineAdapter
-
-        // DotsIndicator'u ViewPager2 ile bağlama
         binding.dotsIndicator.setViewPager2(binding.viewPager)
 
-        // Haberleri getirme işlemi
+        // HABERLER GELİNCE MANŞET & LİSTE AYIRIMI BURADA
         viewModel.newsLiveData.observe(viewLifecycleOwner) { newsResponse ->
             if (newsResponse.articles.isNotEmpty()) {
-                binding.recyclerView.adapter = NewsAdapter(newsResponse.articles)
-                headlineAdapter.updateHeadlines(newsResponse.articles.take(5)) // İlk 5 manşet
+                // İlk 5 haber manşet
+                val headlines = newsResponse.articles.take(5)
+                headlineAdapter.updateHeadlines(headlines)
+
+                // Manşet dışındakiler listeye
+                val remainingNews = newsResponse.articles.drop(5)
+                binding.recyclerView.adapter = NewsAdapter(remainingNews) { selectedArticle ->
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(selectedArticle)
+                    findNavController().navigate(action)
+                }
             }
         }
 
-        // İlk başta haberleri çek
         viewModel.fetchNews()
-
-        // Arama işlemi için SearchView ayarı
         setupSearchView()
     }
 
     private fun setupSearchView() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextSubmit(query: String?): Boolean = false
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 searchRunnable?.let { searchHandler.removeCallbacks(it) }

@@ -10,8 +10,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class NewsAdapter(private val articles: List<Article>) :
-    RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter(
+    private val articles: List<Article>,
+    private val onItemClick: (Article) -> Unit
+) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     class NewsViewHolder(val binding: ItemNewsBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -25,19 +27,21 @@ class NewsAdapter(private val articles: List<Article>) :
         holder.binding.newsTitle.text = article.title
         holder.binding.newsSource.text = article.source.name
 
-        // Tarihi formatlayarak göstermek için
         val formattedDate = formatDate(article.publishedAt)
         holder.binding.newsDate.text = formattedDate
 
-        // Glide ile resim yükleme
         Glide.with(holder.itemView.context)
             .load(article.imageUrl)
             .into(holder.binding.newsImage)
+
+        // BURASI: Tıklama işlemi
+        holder.itemView.setOnClickListener {
+            onItemClick(article)
+        }
     }
 
     override fun getItemCount(): Int = articles.size
 
-    // API'den gelen tarihi düzgün bir formata çevirmek için
     private fun formatDate(dateString: String?): String {
         return try {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())

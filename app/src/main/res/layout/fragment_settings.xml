@@ -1,16 +1,228 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settings.SettingsFragment">
+    android:background="#FAFAFA">
 
-    <TextView
-        android:id="@+id/textSettings"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings Page"
-        android:textSize="20sp"
-        android:layout_centerInParent="true"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:gravity="center_horizontal">
+
+        <!-- Karanlık Mod -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Karanlık Mod"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Switch
+                android:id="@+id/darkModeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- Bildirim -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bildirim Ayarları"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Switch
+                android:id="@+id/notificationSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- SSS Kart -->
+        <LinearLayout
+            android:id="@+id/faqCard"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/faqHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sıkça Sorulan Sorular"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:drawablePadding="8dp"
+                android:paddingBottom="8dp"/>
+
+            <!-- Tüm sorular bunun altında kapalı başlar -->
+            <LinearLayout
+                android:id="@+id/faqContent"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <!-- Soru 1 -->
+                <LinearLayout
+                    android:id="@+id/question1Layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F5F5F5"
+                    android:padding="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Uygulama hangi haber kaynağını kullanıyor?"
+                        android:textStyle="bold"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/answer1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Uygulama NewsAPI'den veri çekmektedir."
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        android:paddingTop="4dp"/>
+                </LinearLayout>
+
+                <!-- Soru 2 -->
+                <LinearLayout
+                    android:id="@+id/question2Layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F5F5F5"
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Karanlık mod nasıl açılır?"
+                        android:textStyle="bold"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/answer2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ayarlar sayfasındaki switch ile karanlık modu açabilirsiniz."
+                        android:textSize="13sp"
+                        android:visibility="gone"
+                        android:paddingTop="4dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Bize Ulaşın -->
+        <LinearLayout
+            android:id="@+id/contactCard"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/contactHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bize Ulaşın"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:drawablePadding="8dp"
+                android:paddingBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/contactContent"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:paddingTop="12dp"
+                android:gravity="center">
+
+                <!-- GitHub -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="24dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/github"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/githubLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GitHub"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Instagram -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/instagram"
+                        android:layout_marginEnd="8dp"/>
+
+                    <TextView
+                        android:id="@+id/instagramLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Instagram"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

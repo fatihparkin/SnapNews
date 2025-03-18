@@ -56,4 +56,6 @@ dependencies {
     implementation (libs.androidx.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
     implementation (libs.dotsindicator)
+    implementation(libs.material.v1100)
+    implementation ("com.tbuonomo:dotsindicator:4.2")
 }

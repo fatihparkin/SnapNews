@@ -24,8 +24,14 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
 
+    // Debounce için handler
     private val searchHandler = Handler(Looper.getMainLooper())
     private var searchRunnable: Runnable? = null
+
+    // Auto-scroll için handler ve değişkenler
+    private val autoScrollHandler = Handler(Looper.getMainLooper())
+    private lateinit var autoScrollRunnable: Runnable
+    private var currentPage = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,13 +44,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // ViewModel ayarla
         val repository = NewsRepository(RetrofitClient.api)
         val factory = HomeViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
 
+        // Liste için LayoutManager
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Manşet adapter
+        // Manşet adapter (tıklamalı)
         val headlineAdapter = HeadlineAdapter(emptyList()) { selectedArticle ->
             val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(selectedArticle)
             findNavController().navigate(action)
@@ -52,14 +60,17 @@ class HomeFragment : Fragment() {
         binding.viewPager.adapter = headlineAdapter
         binding.dotsIndicator.setViewPager2(binding.viewPager)
 
-        // HABERLER GELİNCE MANŞET & LİSTE AYIRIMI BURADA
+        // Haberleri al ve UI'a bağla
         viewModel.newsLiveData.observe(viewLifecycleOwner) { newsResponse ->
             if (newsResponse.articles.isNotEmpty()) {
-                // İlk 5 haber manşet
+                // İlk 5 haber manşete
                 val headlines = newsResponse.articles.take(5)
                 headlineAdapter.updateHeadlines(headlines)
 
-                // Manşet dışındakiler listeye
+                // Auto-scroll başlat
+                startAutoScroll(headlines.size)
+
+                // Kalan haberleri listeye
                 val remainingNews = newsResponse.articles.drop(5)
                 binding.recyclerView.adapter = NewsAdapter(remainingNews) { selectedArticle ->
                     val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(selectedArticle)
@@ -68,7 +79,10 @@ class HomeFragment : Fragment() {
             }
         }
 
+        // İlk haberleri çek
         viewModel.fetchNews()
+
+        // Arama
         setupSearchView()
     }
 
@@ -87,8 +101,22 @@ class HomeFragment : Fragment() {
         })
     }
 
+    // Auto-scroll ViewPager için
+    private fun startAutoScroll(pagerSize: Int) {
+        autoScrollRunnable = object : Runnable {
+            override fun run() {
+                if (pagerSize == 0) return
+                currentPage = (currentPage + 1) % pagerSize
+                binding.viewPager.setCurrentItem(currentPage, true)
+                autoScrollHandler.postDelayed(this, 4000) // 4 saniyede bir kaydır
+            }
+        }
+        autoScrollHandler.postDelayed(autoScrollRunnable, 4000)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        autoScrollHandler.removeCallbacks(autoScrollRunnable)
         _binding = null
     }
 }

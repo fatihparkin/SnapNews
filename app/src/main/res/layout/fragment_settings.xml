@@ -10,31 +10,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
-        <!-- Karanlık Mod -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:elevation="4dp"
-            android:padding="16dp"
-            android:layout_marginBottom="12dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Karanlık Mod"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <Switch
-                android:id="@+id/darkModeSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
         <!-- Bildirim -->
         <LinearLayout
             android:orientation="horizontal"
@@ -82,7 +57,7 @@
                 android:drawablePadding="8dp"
                 android:paddingBottom="8dp"/>
 
-            <!-- Tüm sorular bunun altında kapalı başlar -->
+            <!-- SSS içeriği -->
             <LinearLayout
                 android:id="@+id/faqContent"
                 android:orientation="vertical"
@@ -119,7 +94,7 @@
                         android:paddingTop="4dp"/>
                 </LinearLayout>
 
-                <!-- Soru 2 -->
+                <!-- Soru 2 (yeni) -->
                 <LinearLayout
                     android:id="@+id/question2Layout"
                     android:orientation="vertical"
@@ -133,7 +108,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Karanlık mod nasıl açılır?"
+                        android:text="SnapNews uygulaması ücretsiz mi?"
                         android:textStyle="bold"
                         android:textSize="14sp"/>
 
@@ -141,7 +116,7 @@
                         android:id="@+id/answer2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ayarlar sayfasındaki switch ile karanlık modu açabilirsiniz."
+                        android:text="Evet, SnapNews tamamen ücretsizdir ve hiçbir ücret talep etmez."
                         android:textSize="13sp"
                         android:visibility="gone"
                         android:paddingTop="4dp"/>

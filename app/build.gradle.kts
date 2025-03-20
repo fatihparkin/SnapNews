@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.gms)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -58,4 +60,6 @@ dependencies {
     implementation (libs.dotsindicator)
     implementation(libs.material.v1100)
     implementation ("com.tbuonomo:dotsindicator:4.2")
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 }

@@ -7,16 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.fatihparkin.snapnews.R
 import com.fatihparkin.snapnews.databinding.FragmentSettingsBinding
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private var isFaqOpen = false
     private var isContactOpen = false
 
@@ -31,27 +35,23 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // SSS ve Bize Ulaşın başlangıçta kapalı
-        binding.faqContent.visibility = View.GONE
-        binding.contactContent.visibility = View.GONE
-        binding.answer1.visibility = View.GONE
-        binding.answer2.visibility = View.GONE
-
-        // Karanlık mod switch
-        binding.darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            AppCompatDelegate.setDefaultNightMode(
-                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
-                else AppCompatDelegate.MODE_NIGHT_NO
-            )
-        }
+        firebaseAnalytics = Firebase.analytics
+        Firebase.crashlytics.log("SettingsFragment açıldı")
 
         // Bildirim switch
         binding.notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
             val msg = if (isChecked) "Bildirimler Açıldı" else "Bildirimler Kapatıldı"
             Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+            firebaseAnalytics.logEvent("bildirim_degisti", Bundle().apply {
+                putString("durum", if (isChecked) "acildi" else "kapandi")
+            })
         }
 
-        // SSS komple aç/kapat
+        // --- SSS bölüm ---
+        binding.faqContent.visibility = View.GONE
+        binding.answer1.visibility = View.GONE
+        binding.answer2.visibility = View.GONE
+
         binding.faqHeader.setOnClickListener {
             isFaqOpen = !isFaqOpen
             binding.faqContent.visibility = if (isFaqOpen) View.VISIBLE else View.GONE
@@ -60,19 +60,36 @@ class SettingsFragment : Fragment() {
                 if (isFaqOpen) R.drawable.ic_arrow_drop_up else R.drawable.ic_arrow_drop_down,
                 0
             )
+            firebaseAnalytics.logEvent("sss_acildi_kapatildi", Bundle().apply {
+                putString("durum", if (isFaqOpen) "acildi" else "kapandi")
+            })
         }
 
-        // Soru 1 toggle
         binding.question1Layout.setOnClickListener {
-            toggleAnswer(binding.answer1)
+            try {
+                toggleAnswer(binding.answer1)
+                firebaseAnalytics.logEvent("sss_soru_tiklandi", Bundle().apply {
+                    putString("soru", "Haber kaynaklarını nereden alıyorsunuz?")
+                })
+            } catch (e: Exception) {
+                Firebase.crashlytics.recordException(e)
+            }
         }
 
-        // Soru 2 toggle
         binding.question2Layout.setOnClickListener {
-            toggleAnswer(binding.answer2)
+            try {
+                toggleAnswer(binding.answer2)
+                firebaseAnalytics.logEvent("sss_soru_tiklandi", Bundle().apply {
+                    putString("soru", "SnapNews ücretli mi?")
+                })
+            } catch (e: Exception) {
+                Firebase.crashlytics.recordException(e)
+            }
         }
 
-        // Bize Ulaşın toggle
+        // --- Bize Ulaşın bölüm ---
+        binding.contactContent.visibility = View.GONE
+
         binding.contactHeader.setOnClickListener {
             isContactOpen = !isContactOpen
             binding.contactContent.visibility = if (isContactOpen) View.VISIBLE else View.GONE
@@ -81,16 +98,29 @@ class SettingsFragment : Fragment() {
                 if (isContactOpen) R.drawable.ic_arrow_drop_up else R.drawable.ic_arrow_drop_down,
                 0
             )
+            firebaseAnalytics.logEvent("bize_ulasin_acildi_kapatildi", Bundle().apply {
+                putString("durum", if (isContactOpen) "acildi" else "kapandi")
+            })
         }
 
-        // GitHub link
+        // GitHub
         binding.githubLink.setOnClickListener {
-            openUrl("https://github.com/fatihparkin")
+            try {
+                openUrl("https://github.com/fatihparkin")
+                firebaseAnalytics.logEvent("github_tiklandi", null)
+            } catch (e: Exception) {
+                Firebase.crashlytics.recordException(e)
+            }
         }
 
-        // Instagram link
+        // Instagram
         binding.instagramLink.setOnClickListener {
-            openUrl("https://instagram.com/fatihparkin")
+            try {
+                openUrl("https://instagram.com/fatihparkin")
+                firebaseAnalytics.logEvent("instagram_tiklandi", null)
+            } catch (e: Exception) {
+                Firebase.crashlytics.recordException(e)
+            }
         }
     }
 

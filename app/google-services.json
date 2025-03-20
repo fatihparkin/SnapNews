@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "889290992693",
+    "project_id": "snapnews-b6c4f",
+    "storage_bucket": "snapnews-b6c4f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889290992693:android:0b4e2a56b33b59511d157c",
+        "android_client_info": {
+          "package_name": "com.fatihparkin.snapnews"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUfAuTvlJmOeTUDBCfOzfpJDjlOGjLJ9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

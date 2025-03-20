@@ -1,100 +1,121 @@
-# 📱 SnapNews
+# 📱 SnapNews - Android News Application
 
-SnapNews is a modern and lightweight news application that delivers real-time news articles via NewsAPI.  
-The app offers an intuitive UI and smooth UX with breaking news headlines, search functionality, and Firebase integrations.
+SnapNews is a modern and lightweight Android news application built using Kotlin and MVVM architecture. It fetches real-time news from [NewsAPI.org](https://newsapi.org/) and provides users with a smooth experience through intuitive navigation and user-friendly interface components.
 
 ---
 
-## ✨ Features
+## 🚀 Project Overview
 
-- 📰 **Breaking News Headlines** with auto-scroll slider (ViewPager2)
-- 🔍 **Live Search** with debounce mechanism to optimize API calls
-- 🗂️ **Dynamic News List** (removes headlines from the regular news feed)
-- 📄 **Article Detail View** with article image, description, and publish date
-- 📅 **Publish Date Formatter** to display readable dates
-- ⚙️ **Settings Screen** with:
-  - Notification toggle
-  - Expandable FAQ section with multiple Q&A
-  - Expandable "Contact Us" with clickable GitHub & Instagram links
-- 📊 **Firebase Analytics** (tracks user actions like search, clicks)
-- ⚠️ **Firebase Crashlytics** (automatically reports app crashes)
+SnapNews leverages Kotlin and modern Android libraries to deliver real-time breaking news, powerful search functionalities, detailed news views, and user settings. With Firebase Analytics and Crashlytics integration, the app provides insights into user interactions and robust crash reporting, enhancing overall app reliability.
+
+The architecture follows **MVVM (Model-View-ViewModel)** principles, clearly separating business logic, UI components, and data management for maintainability and scalability.
+
+---
+
+## ✨ Key Features
+
+- 📰 **Breaking News Headlines**
+  - Headlines carousel using ViewPager2 for auto-scrolling top news.
+
+- 🔍 **Live Search with Debounce**
+  - Optimized instant search results using debounce to minimize API calls.
+
+- 📄 **Article Detail View**
+  - Detailed views with images, descriptions, authors, and formatted publish dates.
+
+- 📅 **Publish Date Formatter**
+  - User-friendly date formatting for articles.
+
+- ⚙️ **Interactive Settings Screen**
+  - Notification toggle with real-time Toast feedback.
+  - Expandable, professionally-designed FAQ section.
+  - Expandable "Contact Us" with integrated GitHub & Instagram links.
+
+- 📊 **Firebase Analytics**
+  - Tracks critical user actions such as searches, clicks, and page views.
+
+- ⚠️ **Firebase Crashlytics**
+  - Automatic tracking and detailed reporting of application crashes and errors.
+
 - 🧩 **MVVM Architecture**
-- 🎨 **Material Design Components**
+  - Clear separation of concerns, enhancing testability and maintainability.
+
+- 🎨 **Material Design UI**
+  - Modern interface based on Google's Material Design principles.
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Libraries
 
-- **Language:** Kotlin
-- **Architecture:** MVVM
-- **API Client:** Retrofit2
-- **Image Loading:** Glide
-- **UI:** ViewPager2 + RecyclerView + SearchView + Material Components
-- **Backend Services:** Firebase Analytics & Crashlytics
-- **Navigation:** Jetpack Navigation Component
+- **Language**: Kotlin
+- **Architecture**: MVVM
+- **Networking**: Retrofit2
+- **Image Loading**: Glide
+- **UI Components**: ViewPager2, RecyclerView, Material Components
+- **Analytics & Crash Reporting**: Firebase Analytics & Crashlytics
+- **Navigation**: Jetpack Navigation Component
 
 ---
 
-## 📷 Screenshots
+## 📸 Screenshots
 
-### 🏠 Home Screen  
+### 🏠 Home Screen
 _Displaying breaking news headlines & news list_
 
-<img src="app/screenshoots/home_screen.png" alt="Home Screen" width="600"/>
-
-### 📄 Detail Screen  
-_News detail with image, title, and description_
-
-<img src="app/screenshoots/detail_screen.png" alt="Detail Screen" width="600"/>
-
-### ⚙️ Settings Screen  
-_FAQ section and Contact Us with social links_
-
-<img src="app/screenshoots/settings_screen.png" alt="Settings Screen" width="600"/>
+<img src="app/screenshoots/home_screen.png" alt="Home Screen" width="350"/>
 
 ---
 
-## ⚙️ Installation
+### 📄 News Detail Screen
+_Showing detailed news information clearly_
 
-🚀 SnapNews Setup Guide
+<img src="app/screenshoots/detail_screen.png" alt="Detail Screen" width="350"/>
 
-Follow these simple steps to quickly get SnapNews up and running on your machine.
+---
 
-📌 Step 1: Clone the Repository
+### ⚙️ Settings Screen
+_Interactive FAQ & Contact sections_
 
-Clone the repository to your local machine:
+<img src="app/screenshoots/settings_screen.png" alt="Settings Screen" width="350"/>
 
-📌 Step 2: Open the Project
+---
 
-Open the cloned project folder in Android Studio:
+## 🔧 Installation Steps
 
-Launch Android Studio.
+Follow these steps to set up SnapNews on your local machine:
 
-Select "Open an Existing Project".
+**Step 1: Clone the Repository**
 
-Navigate to the cloned SnapNews directory and select it.
+`git clone https://github.com/fatihparkin/SnapNews.git`
 
-📌 Step 3: Configure API Key
+**Step 2: Open Project in Android Studio**
 
-Insert your NewsAPI Key into the RetrofitClient.kt file:
+- Launch Android Studio.
+- Select "Open an Existing Project".
+- Navigate to the cloned SnapNews directory and open it.
+  
+**Step 3: Configure NewsAPI Key**
+  
+- Visit NewsAPI.org to obtain your API key.
+- Navigate to:`app/src/main/java/com/yourpackagename/data/api/RetrofitClient.kt`
+- Replace "YOUR_API_KEY" with your NewsAPI key.
 
-You can obtain your API key from NewsAPI.org.
+ **Step 4: Sync & Run the App**
+- Sync Gradle files (File > Sync Project with Gradle Files).
+- Connect an emulator or physical Android device.
+- Press Run ▶️ to launch SnapNews.
+- 🎉 That's it! SnapNews is now ready!
 
-📌 Step 4: Run the App
+🔗 Contact & Social Links
+Feel free to reach out or follow me:
 
-Sync the Gradle project (File > Sync Project with Gradle Files).
-
-Connect your emulator or physical Android device.
-
-Click the Run ▶️ button in Android Studio to launch SnapNews.
-
-🎉 That's it! You're all set to explore SnapNews!
 ## 📩 Contact
 
 - **GitHub:** [@fatihparkin](https://github.com/fatihparkin)  
-- **Instagram:** [@fatihparkin](https://instagram.com/fatihparkin)  
-
+- **Instagram:** [@fatihparkin](https://instagram.com/fatihparkin)
+  
 ## 📄 License
+- This project is built for educational and portfolio purposes only.
+- No commercial license is applied to this repository.
+  
 
-This project is built for educational and portfolio purposes only.  
-No commercial license is applied to this repository.
